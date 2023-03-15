@@ -27,7 +27,7 @@ export default function Banner() {
     })
     setMovie(movieDetail);
 
-    console.log(movieDetail)
+    // console.log(movieDetail)
   }
 
   const truncate = (str, n) => {
