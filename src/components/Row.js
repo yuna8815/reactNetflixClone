@@ -14,15 +14,13 @@ function Row({ title, id, fetchUrl, isLargeRow }) {
 
   const fetchMovieData = async () => {
     const request = await axios.get(fetchUrl);
-    console.log("request", request);
+    // console.log("request", request);
     setMovies(request.data.results);
   };
 
   const handleClick = (movie) => {
     setModalOpen(true)
     setMovieSelected(movie)
-    console.log("movieSelected", movieSelected)
-    console.log("movieSelected", {...movieSelected})
   }
 
   return (
