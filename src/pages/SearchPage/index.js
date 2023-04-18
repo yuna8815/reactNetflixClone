@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router'
 import instance from '../../api/axios'
+import { useDebounce } from '../../hooks/useDebounce'
 import './SearchPage.css'
 
 export default function SearchPage() {
@@ -12,6 +13,7 @@ export default function SearchPage() {
   }
   let query = useQuery();
   const searchTerm = query.get('q')
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
   // console.log("searchTerm == ", searchTerm)
 
   const fetchSearchMovie = async (searchTerm) => {
@@ -27,10 +29,10 @@ export default function SearchPage() {
   }
 
   useEffect(() => {
-    if(searchTerm) {
-      fetchSearchMovie(searchTerm)
+    if(debouncedSearchTerm) {
+      fetchSearchMovie(debouncedSearchTerm)
     }
-  }, [searchTerm])
+  }, [debouncedSearchTerm])
 
   const renderSearchResults = () => {
     return searchResults.length > 0 ? (
@@ -39,7 +41,7 @@ export default function SearchPage() {
           if(movie.backdrop_path !== null && movie.media_type !== "person") {
             const movieImageUrl = "https://image.tmdb.org/t/p/w500"+movie.backdrop_path
             return (
-              <div className="movie">
+              <div className="movie" key={movie.id}>
                 <div className="movie__column-poster">
                   <img
                     src={movieImageUrl}
