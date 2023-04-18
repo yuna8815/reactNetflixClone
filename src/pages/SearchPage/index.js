@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import instance from '../../api/axios'
 import { useDebounce } from '../../hooks/useDebounce'
 import './SearchPage.css'
 
 export default function SearchPage() {
+  const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState([])
 
   // console.log("useLocation()", useLocation())
@@ -21,7 +22,7 @@ export default function SearchPage() {
       const request = await instance.get(
         `/search/multi?include_adult=false&query=${searchTerm}`
       )
-      console.log("request", request)
+      // console.log("request", request)
       setSearchResults(request.data.results)
     } catch (error) {
       console.log("error", error)
@@ -42,7 +43,9 @@ export default function SearchPage() {
             const movieImageUrl = "https://image.tmdb.org/t/p/w500"+movie.backdrop_path
             return (
               <div className="movie" key={movie.id}>
-                <div className="movie__column-poster">
+                <div
+                  onClick={() => navigate(`/${movie.id}`)}
+                  className="movie__column-poster">
                   <img
                     src={movieImageUrl}
                     alt="movie image"
